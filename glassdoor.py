@@ -22,11 +22,11 @@ def openbrowser(locid =1139977, key='data scientist intern'):
     driver.wait = WebDriverWait(driver, 5)
     driver.maximize_window()
     words = key.split()
-    txt =''    
-    for w in words:
-        txt +=(w+'+')
+    txt = ''.join(f'{w}+' for w in words)
 #    print txt
-    driver.get("https://www.glassdoor.com/Job/jobs.htm?suggestCount=0&suggestChosen=true&clickSource=searchBtn&typedKeyword={}&sc.keyword={}&locT=C&locId={}&jobType=".format(txt[:-1],txt[:-1], locid)) 
+    driver.get(
+        f"https://www.glassdoor.com/Job/jobs.htm?suggestCount=0&suggestChosen=true&clickSource=searchBtn&typedKeyword={txt[:-1]}&sc.keyword={txt[:-1]}&locT=C&locId={locid}&jobType="
+    )
     return driver
 #s = urllib.urlopen('file:///C:/UTA/Data%20Science/Project2/pokemon_5378/data/{}/{}'.format(folder,files)).read()
 def geturl(driver):

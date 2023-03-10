@@ -67,11 +67,7 @@ class MyCountVectorizer:
 
     def term_freq(self, term, document):
         words = document.split()
-        count = 0
-        for word in words:
-            if word == term:
-                count += 1
-        return count
+        return sum(word == term for word in words)
     
     def print_matrix(self):
         for vec in self.matrix:
@@ -175,7 +171,7 @@ logging.basicConfig(
 model = gensim.models.KeyedVectors.load_word2vec_format(
     'C:/UTA/Data Science/GoogleNews-vectors-negative300.bin', 
     binary=True) 
-    
+
 
 stopwords = nltk.corpus.stopwords.words('english')
 
@@ -209,7 +205,7 @@ for j in jd:
                 continue
     i+=1
     vec.append(jd_vector)
-    
+
 mean_vec = []
 for j in vec:
     mean = []
@@ -225,21 +221,13 @@ plot_mds(mean_vec)
 plot_pca(mean_vec)
 
 from sklearn.metrics.pairwise import cosine_distances
-cos_dist =[]
-for vec in data[:-1]:
-    cos_dist.append(float(cosine_distances(vec,data[-1])))
-    
-
+cos_dist = [float(cosine_distances(vec,data[-1])) for vec in data[:-1]]
 ps = PorterStemmer()
 key_list =[]
 
 for j in jd[:-1]:
-    key = ''
-    w = set()
-    for word in keywords(j).split('\n'):
-        w.add(ps.stem(word))
-    for x in w:
-        key += '{} '.format(x)
+    w = {ps.stem(word) for word in keywords(j).split('\n')}
+    key = ''.join(f'{x} ' for x in w)
     key_list.append(key)
 
 
